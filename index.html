@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <title>CRUD Barang</title>
+</head>
+<body>
+  <h1 style="text-align:center;">Barang dan Harga</h1>
+  <hr>
+  
+  <input placeholder="Nama Barang" id="namaBarang">
+  <input placeholder="Harga Satuan" type="number" id="harga">
+  <input placeholder="Jumlah" type="number" id="jumlah">
+  <input type="file" id="gambar" accept="image/*">
+  
+  <button id="btnTambah" onclick="tambahBarang()">Masukkan</button>
+  <button onclick="resetData()">Reset Data</button>
+  <hr>
+  
+  <table border="1" width="100%">
+    <thead>
+      <tr>
+        <th>Nama Barang</th>
+        <th>Harga Satuan</th>
+        <th>Jumlah</th>
+        <th>Total Harga</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="output"></tbody>
+  </table>
+  
+  <hr>
+  <h3>
+    Jumlah Jenis Barang: <span id="jumlahJenisBarang">0</span><br>
+    Jumlah Total Semua Barang: <span id="jumlahTotalBarang">0</span>
+  </h3>
+  <h3 id="total"></h3>
+  
+</body>
+<script src="scripts/main.js"></script>
+</html>
