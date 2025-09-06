@@ -39,6 +39,7 @@ function tambahBarang() {
   let harga = parseInt(document.getElementById('harga').value);
   let jumlah = parseInt(document.getElementById('jumlah').value);
   let gambar = document.getElementById('gambar').files[0];
+  let gambarURL;
 
   if (!namaBarang) {
     alert('Nama barang tidak boleh kosong');
@@ -52,18 +53,30 @@ function tambahBarang() {
     alert('Jumlah harus lebih besar dari 0');
     return;
   }
-  if (!gambar) {
-    alert('Gambar barang harus diunggah');
-    return;
-  }
   
-  let ekstensiGambar = gambar.name.split('.').pop().toLowerCase();
-  if (!['jpg', 'jpeg', 'png'].includes(ekstensiGambar)) {
-    alert('Hanya file gambar (.jpg, .jpeg, .png) yang diperbolehkan.');
-    return;
+  if (indexEdit === -1) {
+    if (!gambar) {
+      alert('Gambar barang harus diunggah');
+      return;
+    }
+    let ekstensiGambar = gambar.name.split('.').pop().toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(ekstensiGambar)) {
+      alert('Hanya file gambar (.jpg, .jpeg, .png) yang diperbolehkan.');
+      return;
+    }
+    gambarURL = URL.createObjectURL(gambar);
+  } else {
+    if (gambar) {
+      let ekstensiGambar = gambar.name.split('.').pop().toLowerCase();
+      if (!['jpg', 'jpeg', 'png'].includes(ekstensiGambar)) {
+        alert('Hanya file gambar (.jpg, .jpeg, .png) yang diperbolehkan.');
+        return;
+      }
+      gambarURL = URL.createObjectURL(gambar);
+    } else {
+      gambarURL = daftarBarang[indexEdit].gambar;
+    }
   }
-
-  let gambarURL = URL.createObjectURL(gambar);
 
   if (indexEdit === -1) {
     daftarBarang.push({ nama: namaBarang, harga: harga, jumlah: jumlah, gambar: gambarURL });
@@ -122,6 +135,8 @@ function hitungTotal() {
 }
 
 function resetData() {
-  daftarBarang = [];
-  tampilkanBarang();
+  if (confirm('Apakah Anda yakin ingin menghapus semua data barang?')) {
+    daftarBarang = [];
+    tampilkanBarang();
+  }
 }
