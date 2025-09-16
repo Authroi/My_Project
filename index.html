@@ -1,42 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="styles/style.css"/>
-  <title>CRUD Barang</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Management</title>
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-  <h1 style="text-align:center;">Barang dan Harga</h1>
-  <hr>
-  
-  <input placeholder="Nama Barang" id="namaBarang">
-  <input placeholder="Harga Satuan" type="number" id="harga">
-  <input placeholder="Jumlah" type="number" id="jumlah">
-  <input type="file" id="gambar" accept="image/*">
-  
-  <button id="btnTambah" onclick="tambahBarang()">Masukkan</button>
-  <button onclick="resetData()">Reset Data</button>
-  <hr>
-  
-  <table border="1" width="100%">
-    <thead>
-      <tr>
-        <th>Nama Barang</th>
-        <th>Harga Satuan</th>
-        <th>Jumlah</th>
-        <th>Total Harga</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody id="output"></tbody>
-  </table>
-  
-  <hr>
-  <h3>
-    Jumlah Jenis Barang: <span id="jumlahJenisBarang">0</span><br>
-    Jumlah Total Semua Barang: <span id="jumlahTotalBarang">0</span>
-  </h3>
-  <h3 id="total"></h3>
-  
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>📦 Item Management</h1>
+      <p>Manage your inventory with style and efficiency</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="itemName">Item Name</label>
+          <input type="text" class="form-control" id="itemName" placeholder="Enter item name">
+        </div>
+        
+        <div class="form-group">
+          <label for="price">Unit Price</label>
+          <input type="number" class="form-control" id="price" placeholder="0" min="0" step="0.01">
+        </div>
+        
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" class="form-control" id="quantity" placeholder="0" min="1">
+        </div>
+        
+        <div class="form-group">
+          <label for="image">Product Image</label>
+          <div class="file-input-wrapper">
+            <input type="file" class="file-input" id="image" accept="image/*">
+            <label for="image" class="file-input-label" id="fileLabel">
+              Choose Image
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="form-group">
+          <label for="taxRate">Tax Rate (%)</label>
+          <input type="number" class="form-control" id="taxRate" value="12" min="0" step="0.1">
+        </div>
+        
+        <div class="form-group">
+          <label for="currency">Currency</label>
+          <select class="form-control" id="currency" onchange="renderItems()">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="IDR" selected>IDR (Rp)</option>
+            <option value="JPY">JPY (¥)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn btn-primary" id="btnAdd" onclick="addItem()">
+          Add Item
+        </button>
+        <button class="btn btn-secondary" id="btnCancel" onclick="cancelEdit()" style="display:none;">
+          Cancel
+        </button>
+        <button class="btn btn-danger" onclick="resetData()">
+          Reset All Data
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-section">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Item Name</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="output"></tbody>
+      </table>
+      
+      <div id="emptyState" class="empty-state">
+        <div class="empty-state-icon">📦</div>
+        <h3>No items yet</h3>
+        <p>Add your first item to get started!</p>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="summary-section">
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3 id="itemTypesCount">0</h3>
+          <p>Item Types</p>
+        </div>
+        <div class="summary-card">
+          <h3 id="totalItemsCount">0</h3>
+          <p>Total Quantity</p>
+        </div>
+      </div>
+      
+      <div class="total-breakdown" id="totalBreakdown">
+        <h3>Order Summary</h3>
+        <div id="total"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon" id="modalIcon">❗</div>
+        <h2 class="modal-title" id="modalTitle">Confirm Action</h2>
+      </div>
+      <div class="modal-body" id="modalBody">
+        Are you sure you want to proceed?
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modalConfirmBtn" onclick="confirmAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/script.js"></script>
 </body>
-<script src="main.js"></script>
 </html>
